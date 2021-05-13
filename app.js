@@ -3,10 +3,13 @@ const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("controls-color");
 const range = document.getElementById("range");
 const mode = document.querySelector(".mode");
+const save = document.querySelector(".save");
 
 canvas.width = 700;
 canvas.height = 700;
 
+ctx.fillStyle = "white";
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 ctx.strokeStyle = "#2c2c2c";
 ctx.lineWidth = 2.5;
 ctx.fillStyle = "#2c2c2c";
@@ -55,12 +58,24 @@ function handleModeClick() {
 	}
 }
 
+function handleSaveClick() {
+	const image = canvas.toDataURL();
+	const link = document.createElement("a");
+	link.href = image;
+	link.download = "WooksCanvas";
+	link.click();
+}
+
 function handleCanvasClick() {
 	if (filling) {
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 	} else {
-		ctx.clearRect(0, 0, canvas.width, canvs.height);
+		null;
 	}
+}
+
+function handleContextMenu(event) {
+	event.preventDefault();
 }
 
 if (canvas) {
@@ -69,6 +84,7 @@ if (canvas) {
 	canvas.addEventListener("mouseup", stopPainting);
 	canvas.addEventListener("mouseleave", stopPainting);
 	canvas.addEventListener("click", handleCanvasClick);
+	canvas.addEventListener("contextmenu", handleContextMenu);
 }
 
 Array.from(colors).forEach((color) =>
@@ -81,4 +97,8 @@ if (range) {
 
 if (mode) {
 	mode.addEventListener("click", handleModeClick);
+}
+
+if (save) {
+	save.addEventListener("click", handleSaveClick);
 }
